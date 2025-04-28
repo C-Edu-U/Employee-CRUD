@@ -51,11 +51,18 @@
                             <a class="nav-link" href="<?php echo $url_base; ?>secciones/usuarios/index.php">Usuarios</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="btn btn-outline-light" href="<?php echo $url_base; ?>cerrar.php">Cerrar Sesión</a>
-                        </li>
-                    </ul>
+                    <?php if (isset($_SESSION['usuario'])): ?>
+                    <li class="nav-item dropdown ms-auto">
+                        <a class="btn btn-outline-light dropdown-toggle text-dark bg-white fw-bold" href="#" role="button" data-bs-toggle="dropdown">
+                        👤 <?= $_SESSION['usuario'] ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="<?= $url_base ?>secciones/usuarios/perfil.php">Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="<?= $url_base ?>logout.php">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>

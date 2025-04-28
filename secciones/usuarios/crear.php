@@ -1,6 +1,12 @@
 <?php
 include("../../db.php");
 
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
 if ($_POST) {
     $usuario = $_POST['usuario'];
     $correo = $_POST['correo'];
@@ -24,9 +30,10 @@ include("../../templates/header.php");
         <label for="usuario" class="form-label">Nombre de Usuario *</label>
         <input type="text" class="form-control" name="usuario">
     </div>
-    <div class="mb-3">
+    <div class="mb-3 position-relative">
         <label for="correo" class="form-label">Correo *</label>
-        <input type="email" class="form-control" name="correo">
+        <input type="text" class="form-control" name="correo" id="correo" autocomplete="off">
+        <ul id="sugerencias-correo" class="list-group position-absolute w-100 d-none" style="z-index:1000;"></ul>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Contraseña *</label>
@@ -69,5 +76,45 @@ document.getElementById('form-crear-usuario').addEventListener('submit', functio
     });
 });
 </script>
+
+<script>
+const inputCorreo = document.getElementById('correo');
+const listaCorreo = document.getElementById('sugerencias-correo');
+
+const dominios = ['@gmail.com', '@outlook.com', '@hotmail.com', '@yahoo.com'];
+
+inputCorreo.addEventListener('input', function () {
+    const valor = this.value;
+    listaCorreo.innerHTML = '';
+
+    if (valor.includes('@') || valor.trim() === '') {
+        listaCorreo.classList.add('d-none');
+        return;
+    }
+
+    dominios.forEach(dominio => {
+        const sugerido = valor + dominio;
+        const li = document.createElement('li');
+        li.classList.add('list-group-item', 'list-group-item-action');
+        li.textContent = sugerido;
+        li.addEventListener('click', () => {
+            inputCorreo.value = sugerido;
+            listaCorreo.innerHTML = '';
+            listaCorreo.classList.add('d-none');
+        });
+        listaCorreo.appendChild(li);
+    });
+
+    listaCorreo.classList.remove('d-none');
+});
+
+document.addEventListener('click', (e) => {
+    if (!inputCorreo.contains(e.target) && !listaCorreo.contains(e.target)) {
+        listaCorreo.innerHTML = '';
+        listaCorreo.classList.add('d-none');
+    }
+});
+</script>
+
 
 <?php include("../../templates/footer.php"); ?>

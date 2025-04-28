@@ -1,6 +1,12 @@
 <?php
 include("../../db.php");
 
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
 // Eliminar usuario
 if (isset($_GET['eliminar'])) {
     $id = $_GET['eliminar'];

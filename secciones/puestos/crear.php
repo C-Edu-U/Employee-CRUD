@@ -1,6 +1,12 @@
 <?php
 include("../../db.php");
 
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
 if ($_POST) {
     $nombre = $_POST['nombredelpuesto'];
 

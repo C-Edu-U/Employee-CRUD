@@ -1,6 +1,12 @@
 <?php
 include("../../db.php");
 
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
 // Lógica para eliminar empleado y archivos asociados
 if (isset($_GET['eliminar'])) {
     $id = $_GET['eliminar'];

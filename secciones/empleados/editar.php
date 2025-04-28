@@ -2,6 +2,12 @@
 ob_start(); // Intenta con output buffering si nada más funciona
 include("../../db.php");
 
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
 if (!isset($_GET['id'])) {
     header("Location: index.php");
     exit;

@@ -1,5 +1,10 @@
 <?php
 include("../../db.php");
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../../login.php");
+    exit;
+}
 
 // Obtener los puestos para el <select>
 $sentencia = $conexion->query("SELECT id, nombredelpuesto FROM puestos");
